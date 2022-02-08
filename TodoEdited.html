@@ -1,0 +1,161 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo List</title>
+    <link rel="stylesheet" href="css/all.css">
+    <style>
+        .container{
+            position: relative;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+            background-color: #7EC8E3;
+            height: 400;
+            width: 800px;
+            padding: 10px;
+            border: #0E86D4 solid;
+        }
+        .tasks{
+            height: 250;
+            width: 725;
+            background-color:white;
+            overflow-y: scroll;
+             scrollbar-width: thin;
+            position: relative;
+            left:50;
+            top: 15px;
+            border-radius: 10px;
+        }
+        button {
+        background-color: #050A30;
+        color: white;
+        cursor: pointer;
+        border: none;
+        width: 50px;
+        padding:5px 5px;
+        }
+        button:hover {
+        opacity: 0.8;
+        }
+        input[type=text]{
+            padding: 5px 5px;
+            
+        }
+        .entre{
+            position: relative;
+            left: 75%;
+            top: 30%;
+            transform: translate(-50%,-50%);
+        }
+        .new{
+        display: inline-block;
+        margin: 3px;
+        font-size: 20px;
+        }
+        .taskindex{
+        height: 10;
+        width: 200;
+        position: relative;
+        left: 5;
+        flex: auto;
+
+      }
+      .task{
+            height: 50;
+            width: 695;
+            background-color:#F0FFFF;
+            position: relative;
+            border-radius: 10px;
+            font-size: 20px;
+            line-height: 50px;
+            border: 2px black solid;
+            display: flex;
+            flex-direction: row;
+             
+        }
+        .task:hover{
+            opacity: 0.8;
+        }
+      #icon{
+        
+        position: relative;
+        margin-top: 15px;
+        margin-left: 10px;
+        margin-right: 5px;
+
+      }
+      .fa-check-circle{
+            color: green;
+            cursor: pointer;
+        }
+        .fa-times-circle{
+            color: #D10000;
+            cursor: pointer;
+        }
+        .fa-check-circle:hover{
+            opacity: 0.8;
+        }
+        .fa-times-circle:hover{
+            opacity: 0.8;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="tasks">
+
+        </div>
+        <div class="entre">
+            <label for="new">Text</label>
+            <input class="new" id="new" type="text" placeholder="Task Name">
+            <button onclick="newTask()">Add</button>
+        </div>
+    </div>
+    <script>
+        
+        Tasks = [];
+
+        function init(){
+            if(localStorage){
+                Tasks = JSON.parse(localStorage.tasks);
+            }
+            renderT(Tasks);
+        }
+
+        function newTask(){
+            var taskinput = document.getElementsByClassName("new")[0].value;
+            Tasks.push(taskinput);
+            localStorage.tasks = JSON.stringify(Tasks);
+            renderT(Tasks);
+            
+        }
+        function renderT(arr){
+            var tasksHtmlArr = arr.map(function (element,ind){
+            return '<div class="task"><div  class="taskindex">'+element+'</div> <i  onclick="done(event)" class="fas fa-check-circle "      id="icon" ></i> <i   onclick="remove('+ind+')" class="fas fa-times-circle"  id="icon"></i></div>'
+            })
+
+            var taskstsHtml = tasksHtmlArr.join("\n");
+            var tasks = document.getElementsByClassName("tasks")[0];
+            tasks.innerHTML = taskstsHtml
+
+            
+        }
+
+        function done(e){
+            e.target.parentNode.style.backgroundColor ="#2EFF2E"
+        }
+        function remove(e){
+            Tasks.splice(e,1);
+            localStorage.tasks = JSON.stringify(Tasks);
+            renderT(Tasks);
+        }
+
+        
+        init();
+        
+    </script>
+</body>
+</html>
